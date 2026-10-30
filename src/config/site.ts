@@ -23,14 +23,24 @@ export interface SiteConfig {
   foundedYear: number;
 }
 
+const phoneNumber =
+  ((import.meta.env.VITE_PHONE_NUMBER as string | undefined) ?? '').replace(/\D/g, '') || '911235467890';
+
+/** "911235467890" -> "+91 12354 67890" (last 10 digits as 5 + 5, the rest is the country code). */
+const formatPhone = (digits: string): string => {
+  const local = digits.slice(-10);
+  const country = digits.slice(0, -10);
+  return `${country ? `+${country} ` : ''}${local.slice(0, 5)} ${local.slice(5)}`.trim();
+};
+
 export const siteConfig: SiteConfig = {
   name: 'Aurelle Beauty & Bridal Studio',
   shortName: 'Aurelle',
   tagline: 'Where every woman blooms, and every bride glows.',
   description:
     'Aurelle Beauty & Bridal Studio offers luxury bridal makeup, pre-bridal care, facials, hair spa, styling, waxing and nail care by certified artists. Book your appointment on WhatsApp.',
-  whatsappNumber: '911235467890',
-  phoneDisplay: '+91 12354 67890',
+  whatsappNumber: phoneNumber,
+  phoneDisplay: formatPhone(phoneNumber),
   email: 'hello@aurellestudio.example',
   address: {
     line1: '12, Rosewood Arcade, 2nd Floor',
